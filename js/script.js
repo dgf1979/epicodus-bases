@@ -10,25 +10,29 @@ $( document ).ready(function() {
 
 //raw js
 var toDecimal = function(number, base) {
-  var tempStringArray = number.toString().split("").reverse();
-  var numberArray = tempStringArray.map(function(num) { return parseInt(num); });
+  var numberArray = number.toString().toLowerCase().split("").reverse();
   var result = 0;
-  for (var i = 0; i < numberArray.length; i++) {
-    var power = Math.pow(base, i);
-    result = result + power * numberArray[i];
+
+  var numberMap = new Object();
+
+  var letter = "a";
+  for (var i = 0; i < 36; i++) {
+    if (i < 10) {
+      numberMap[i] = i;
+    } else {
+      numberMap[letter] = i;
+      letter = String.fromCharCode(letter.charCodeAt(0) + 1);
+    }
+  };
+
+  if (base === 16) {
+    result = parseInt(number);
+  } else {
+    for (var i = 0; i < numberArray.length; i++) {
+      var power = Math.pow(base, i);
+      result = result + power * numberMap[numberArray[i]];
+    }
   }
 
   return result;
 };
-
-// var toDecimalFromTrinary = function(trinaryNumber) {
-//   var tempStringArray = trinaryNumber.toString().split("").reverse();
-//   var numberArray = tempStringArray.map(function(num) { return parseInt(num); });
-//   var result = 0;
-//   for (var i = 0; i < numberArray.length; i++) {
-//     var power = Math.pow(3, i);
-//     result = result + power * numberArray[i];
-//   }
-//
-//   return result;
-// };
